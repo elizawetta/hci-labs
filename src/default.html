@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% if page.title != '' %}{{ page.title | escape }} — {% endif %}{{ site.name }}</title>
+    <meta name="description" content="Учебные работы по курсу «Разработка человеко-ориентированных интерфейсов»">
+    <link rel="stylesheet" href="{{ site.baseurl }}/assets/style.css">
+    <link rel="stylesheet" href="{{ site.baseurl }}/assets/report.css">
+    {% if page.diagram %}
+    <script defer src="{{ site.baseurl }}/assets/mermaid.tiny.js"></script>
+    <script defer src="{{ site.baseurl }}/assets/site.js"></script>
+    {% endif %}
+  </head>
+  <body>
+    <div id="bar"></div>
+    <div class="wrapper-container">
+      <div class="wrapper-masthead">
+        <div class="container">
+          <header class="masthead clearfix">
+            <div class="site-info">
+              <h1 class="site-name"><a href="{{ site.baseurl }}/">{{ site.name }}</a></h1>
+            </div>
+            <nav aria-label="Основная навигация">
+              <a href="{{ site.baseurl }}/">Главная</a>
+              <a href="{{ site.baseurl }}/lab-1/">Лабораторная 1</a>
+            </nav>
+          </header>
+        </div>
+      </div>
+      <div class="wrapper-main">
+        <main id="main" class="container">{{ content }}</main>
+      </div>
+    </div>
+  </body>
+</html>

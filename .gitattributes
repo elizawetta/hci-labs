@@ -1,0 +1,5 @@
+* text=auto
+index.html linguist-generated=true
+lab-1/index.html linguist-generated=true
+assets/* linguist-generated=true
+vendor/** linguist-vendored=true
