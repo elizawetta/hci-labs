@@ -44,7 +44,8 @@ const works = [
   { label: 'Лабораторная работа № 3', title: 'Аналитика и KPI' },
   { label: 'Эссе', title: 'Что такое хороший интерфейс' }
 ];
-const home = `<ul>${works.map(work => `<li>${work.href ? `<a href="${work.href}">${work.label}. ${work.title}</a>` : `${work.label}. ${work.title}`}</li>`).join('\n')}</ul>`;
+const titlePage = '<p><strong>Поток:</strong> РЧОИ 1.3<br><strong>ФИО:</strong> Архангельская Елизавета Павловна<br><strong>Группа:</strong> К3439</p>';
+const home = `${titlePage}<ul>${works.map(work => `<li>${work.href ? `<a href="${work.href}">${work.label}. ${work.title}</a>` : `${work.label}. ${work.title}`}</li>`).join('\n')}</ul>`;
 const scss = (await readFile(path.join(root, 'vendor/reverie/style.scss'), 'utf8')).replace(/^---[\s\S]*?---\s*/, '');
 const compiled = sass.compileString(scss, {
   loadPaths: [path.join(root, 'vendor/reverie/_sass')],
