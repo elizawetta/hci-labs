@@ -27,22 +27,27 @@ async function renderPage(title, content, diagram = false, cssClass = '') {
   });
 }
 
-const source = await readFile(path.join(root, 'reports/lab-1.md'), 'utf8');
-const tokens = markdown.lexer(source);
-const sections = [];
-for (const token of tokens) {
-  if (token.type === 'heading' && token.depth === 1) continue;
-  if (token.type === 'heading' && token.depth === 2) sections.push({ title: token.text, tokens: [] });
-  if (sections.length) sections.at(-1).tokens.push(token);
+function renderReport(source) {
+  const tokens = markdown.lexer(source);
+  const sections = [];
+  const introduction = [];
+  for (const token of tokens) {
+    if (token.type === 'heading' && token.depth === 1) continue;
+    if (token.type === 'heading' && token.depth === 2) sections.push({ title: token.text, tokens: [] });
+    if (sections.length) sections.at(-1).tokens.push(token);
+    else introduction.push(token);
+  }
+  const toc = sections.map((section, index) => `<li><a href="#section-${index + 1}">${section.title.replace(/^\d+\.\s*/, '')}</a></li>`).join('');
+  const body = sections.map((section, index) => `<section id="section-${index + 1}">${markdown.parser(section.tokens)}</section>`).join('\n');
+  return `<p><a href="${baseurl}/">← На главную</a></p>${markdown.parser(introduction)}<details><summary>Содержание</summary><ol>${toc}</ol></details>${body}<p><a href="${baseurl}/">← На главную</a></p>`;
 }
-const toc = sections.map((section, index) => `<li><a href="#section-${index + 1}">${section.title.replace(/^\d+\.\s*/, '')}</a></li>`).join('');
-const body = sections.map((section, index) => `<section id="section-${index + 1}">${markdown.parser(section.tokens)}</section>`).join('\n');
-const report = `<p><a href="${baseurl}/">← На главную</a></p><details><summary>Содержание</summary><ol>${toc}</ol></details>${body}<p><a href="${baseurl}/">← На главную</a></p>`;
+const report = renderReport(await readFile(path.join(root, 'reports/lab-1.md'), 'utf8'));
+const essay = renderReport(await readFile(path.join(root, 'reports/essay.md'), 'utf8'));
 const works = [
   { label: 'Лабораторная работа № 1', title: 'JTBD и пользовательские сценарии', href: `${baseurl}/lab-1/` },
   { label: 'Лабораторная работа № 2', title: 'Юзабилити-тестирование' },
   { label: 'Лабораторная работа № 3', title: 'Аналитика и KPI' },
-  { label: 'Эссе', title: 'Что такое хороший интерфейс' }
+  { label: 'Эссе', title: 'Что такое хороший интерфейс', href: `${baseurl}/essay/` }
 ];
 const titlePage = '<p><strong>Поток:</strong> РЧОИ 1.3<br><strong>ФИО:</strong> Архангельская Елизавета Павловна<br><strong>Группа:</strong> К3439</p>';
 const home = `${titlePage}<ul>${works.map(work => `<li>${work.href ? `<a href="${work.href}">${work.label}. ${work.title}</a>` : `${work.label}. ${work.title}`}</li>`).join('\n')}</ul>`;
@@ -52,7 +57,7 @@ const compiled = sass.compileString(scss, {
   style: 'compressed',
   logger: sass.Logger.silent
 });
-for (const dir of ['assets', 'lab-1']) await mkdir(path.join(root, dir), { recursive: true });
+for (const dir of ['assets', 'lab-1', 'essay']) await mkdir(path.join(root, dir), { recursive: true });
 await writeFile(path.join(root, 'assets/style.css'), compiled.css);
 await copyFile(path.join(root, 'src/report.css'), path.join(root, 'assets/report.css'));
 await copyFile(path.join(root, 'src/site.js'), path.join(root, 'assets/site.js'));
@@ -60,4 +65,5 @@ await copyFile(path.join(root, 'node_modules/@mermaid-js/tiny/dist/mermaid.tiny.
 await copyFile(path.join(root, 'node_modules/@mermaid-js/tiny/LICENSE'), path.join(root, 'assets/mermaid.LICENSE'));
 await writeFile(path.join(root, 'index.html'), await renderPage('Разработка человеко-ориентированных интерфейсов', home, false, 'report-page'));
 await writeFile(path.join(root, 'lab-1/index.html'), await renderPage('Лабораторная работа № 1. JTBD и пользовательские сценарии', report, true, 'report-page'));
-console.log('Built with Reverie: index.html, lab-1/index.html');
+await writeFile(path.join(root, 'essay/index.html'), await renderPage('Эссе. Что такое хороший интерфейс', essay, false, 'report-page'));
+console.log('Built with Reverie: index.html, lab-1/index.html, essay/index.html');
