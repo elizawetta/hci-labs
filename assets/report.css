@@ -9,3 +9,7 @@
 .mermaid p{margin:0;font-size:16px;line-height:1.5}
 .mermaid svg{display:block;max-width:none;margin:auto}
 @media print{#bar,.wrapper-masthead,.wrapper-footer,details{display:none}.wrapper-main{padding:0}.container{max-width:none}.diagram-scroll{overflow:visible}.mermaid svg{width:100%;height:auto;max-height:240mm}}
+
+.report-page :not(pre)>code{font:inherit;color:inherit;background:none;border:0;padding:0;white-space:normal;overflow-wrap:anywhere}
+
+.formula{display:flex;align-items:center;justify-content:center;gap:16px;padding:24px 16px;margin:24px 0;background:#f6f7f9;border:1px solid #e1e4e8;border-radius:8px;color:#252a32;font-family:Georgia,"Times New Roman",serif;font-size:23px;line-height:1.5;overflow-x:auto;white-space:nowrap}.fraction{display:inline-flex;flex-direction:column;text-align:center;flex-shrink:0}.fraction>span{display:block;padding:3px 12px}.fraction>span:first-child{border-bottom:1.5px solid currentColor}.formula sub{font-size:.65em;vertical-align:sub}.entry sub{font-size:.75em}@media(max-width:540px){.formula{justify-content:flex-start;font-size:20px;gap:12px;padding:18px 12px}}

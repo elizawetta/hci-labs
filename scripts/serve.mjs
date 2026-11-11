@@ -24,7 +24,7 @@ const server = createServer(async (request, response) => {
     return;
   }
   const relative = pathname.slice(base.length);
-  if (relative.split('/').some(part => part.startsWith('.')) || !/^(?:$|index\.html$|(?:lab-1|lab-2|essay)(?:\/|$)|assets\/|reports\/)/.test(relative)) {
+  if (relative.split('/').some(part => part.startsWith('.')) || !/^(?:$|index\.html$|(?:lab-1|lab-2|lab-3|essay|booking)(?:\/|$)|assets\/|reports\/)/.test(relative)) {
     response.writeHead(404).end('Not found');
     return;
   }

@@ -43,11 +43,12 @@ function renderReport(source) {
 }
 const report = renderReport(await readFile(path.join(root, 'reports/lab-1.md'), 'utf8'));
 const lab2 = renderReport(await readFile(path.join(root, 'reports/lab-2.md'), 'utf8'));
+const lab3 = renderReport(await readFile(path.join(root, 'reports/lab-3.md'), 'utf8'));
 const essay = renderReport(await readFile(path.join(root, 'reports/essay.md'), 'utf8'));
 const works = [
   { label: 'Лабораторная работа № 1', title: 'JTBD и пользовательские сценарии', href: `${baseurl}/lab-1/` },
   { label: 'Лабораторная работа № 2', title: 'Юзабилити-тестирование', href: `${baseurl}/lab-2/` },
-  { label: 'Лабораторная работа № 3', title: 'Аналитика и KPI' },
+  { label: 'Лабораторная работа № 3', title: 'Аналитика и KPI', href: `${baseurl}/lab-3/` },
   { label: 'Эссе', title: 'Что такое хороший интерфейс', href: `${baseurl}/essay/` }
 ];
 const titlePage = '<p><strong>Поток:</strong> РЧОИ 1.3<br><strong>ФИО:</strong> Архангельская Елизавета Павловна<br><strong>Группа:</strong> К3439</p>';
@@ -58,7 +59,7 @@ const compiled = sass.compileString(scss, {
   style: 'compressed',
   logger: sass.Logger.silent
 });
-for (const dir of ['assets', 'lab-1', 'lab-2', 'essay']) await mkdir(path.join(root, dir), { recursive: true });
+for (const dir of ['assets', 'lab-1', 'lab-2', 'lab-3', 'essay']) await mkdir(path.join(root, dir), { recursive: true });
 await writeFile(path.join(root, 'assets/style.css'), compiled.css);
 await copyFile(path.join(root, 'src/report.css'), path.join(root, 'assets/report.css'));
 await copyFile(path.join(root, 'src/site.js'), path.join(root, 'assets/site.js'));
@@ -67,5 +68,11 @@ await copyFile(path.join(root, 'node_modules/@mermaid-js/tiny/LICENSE'), path.jo
 await writeFile(path.join(root, 'index.html'), await renderPage('Разработка человеко-ориентированных интерфейсов', home, false, 'report-page'));
 await writeFile(path.join(root, 'lab-1/index.html'), await renderPage('Лабораторная работа № 1. JTBD и пользовательские сценарии', report, true, 'report-page'));
 await writeFile(path.join(root, 'lab-2/index.html'), await renderPage('Лабораторная работа № 2. Юзабилити-тестирование', lab2, false, 'report-page'));
+await writeFile(path.join(root, 'lab-3/index.html'), await renderPage('Лабораторная работа № 3. Аналитика и KPI', lab3, true, 'report-page'));
 await writeFile(path.join(root, 'essay/index.html'), await renderPage('Эссе. Что такое хороший интерфейс', essay, false, 'report-page'));
-console.log('Built with Reverie: index.html, lab-1/index.html, lab-2/index.html, essay/index.html');
+console.log('Built with Reverie: index.html, lab-1/index.html, lab-2/index.html, lab-3/index.html, essay/index.html, booking/index.html');
+
+await mkdir(path.join(root, 'booking'), { recursive: true });
+await mkdir(path.join(root, 'assets/booking'), { recursive: true });
+await copyFile(path.join(root, 'src/booking/index.html'), path.join(root, 'booking/index.html'));
+for (const name of ['style.css', 'app.js', 'analytics.js', 'analytics-config.js']) await copyFile(path.join(root, 'src/booking', name), path.join(root, 'assets/booking', name));
